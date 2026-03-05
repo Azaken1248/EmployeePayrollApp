@@ -62,6 +62,9 @@ public final class Payslip implements Cloneable{
 		return month;
 	}
 	
+	public double getNetPay() {
+		return components.netPay;
+	}
 	
 	/**
 	 * Method to check if two slips are equal
