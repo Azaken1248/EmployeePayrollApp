@@ -19,18 +19,16 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
 
 /**
  * ------------- MAIN APP -------------
- * Main runner class for Use Case 3
+ * Main runner class for Use Case 4E
  *
  * Role of main():
- * - Collect input
- * - Create required objects
- * - Delegate calculations
- * - Display final output
+ * - Demonstrate safe usage of a finalized object
+ * - Coordinate cloning, validation and persistence
  * 
- * main() does NOT perform calculations itself.
+ * main() does NOT modify the original payslip.
  * 
  * @author Developer
- * @version 3.0
+ * @version 4.0
  */
 public class EmployeePayrollApp {
 	private static final Scanner sc = new Scanner(System.in);
@@ -243,12 +241,6 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Entry point for payslip generation.
-	 * 
-	 * Execution Flow:
-	 * 1. Capture employee details
-	 * 2. Capture salary components
-	 * 3. Generate payslip via service
-	 * 4. Display formatted payslip
 	 * 
 	 * @param args	Command-Line arguments
 	 */
