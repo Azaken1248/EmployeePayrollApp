@@ -1,15 +1,23 @@
+
 package com.seveneleven.employeepayrollapp.main;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.seveneleven.employeepayrollapp.payments.components.SalaryComponents;
 import com.seveneleven.employeepayrollapp.payments.payroll.Payslip;
 import com.seveneleven.employeepayrollapp.payments.services.FileService;
 import com.seveneleven.employeepayrollapp.payments.services.PayrollService;
 import com.seveneleven.employeepayrollapp.payments.verification.DownloadToken;
 import com.seveneleven.employeepayrollapp.user.auth.AuthenticationService;
+import com.seveneleven.employeepayrollapp.user.dashboard.Dashboard;
+import com.seveneleven.employeepayrollapp.user.dashboard.factory.DashboardFactory;
 import com.seveneleven.employeepayrollapp.user.model.Employee;
 import com.seveneleven.employeepayrollapp.user.model.UserAccount;
 import com.seveneleven.employeepayrollapp.user.session.Session;
@@ -19,6 +27,7 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
 
 /**
  * ------------- MAIN APP -------------
+<<<<<<< HEAD
  * Main runner class for Use Case 4
  *
  * Role of main():
@@ -29,6 +38,18 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
  * 
  * @author Developer
  * @version 4.0
+=======
+ * Main runner class for Use Case 5
+ *
+ * Role of main():
+ * - Collect user input
+ * - Prepare data
+ * - Request appropriate dashboard
+ * - Display dashboard
+ * 
+ * @author Developer
+ * @version 5.0
+>>>>>>> feature/UC5-EmployeePayrollApp
  */
 public class EmployeePayrollApp {
 	private static final Scanner sc = new Scanner(System.in);
@@ -82,6 +103,8 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Helper method to fetch full Employee details for the logged-in user
+	 * * @param targetUsername The username of the logged-in user
+	 * @return The corresponding Employee object
 	 */
 	private static Employee getEmployeeByUsername(String targetUsername) {
 		final String BASE_DIR = "./src/com/seveneleven/employeepayrollapp/user/storage/";
@@ -109,6 +132,64 @@ public class EmployeePayrollApp {
 	}
 
 	/**
+	 * Method to persist simplified real data for the dashboard
+	 * * @param empId  The ID of the employee
+	 * @param month  The month of the payslip
+	 * @param netPay The net pay amount
+	 */
+	private static void savePayslipForDashboard(String empId, String month, double netPay) {
+		final String BASE_DIR = "./src/com/seveneleven/employeepayrollapp/user/storage/";
+		try (FileWriter fw = new FileWriter(BASE_DIR + "payslips_data.txt", true);
+			 BufferedWriter bw = new BufferedWriter(fw)) {
+			
+			bw.write(empId + "," + month + "," + netPay);
+			bw.newLine();
+			
+		} catch (IOException e) {
+			System.out.println("Warning: Could not save payslip for dashboard.");
+		}
+	}
+
+	/**
+	 * Method to load real generated payslips from persistent storage based on role
+	 * * @param currentEmployee The currently logged-in employee
+	 * @return An ArrayList of Payslip objects
+	 */
+	private static ArrayList<Payslip> loadRealPayslips(Employee currentEmployee) {
+		ArrayList<Payslip> list = new ArrayList<>();
+		final String BASE_DIR = "./src/com/seveneleven/employeepayrollapp/user/storage/";
+		File file = new File(BASE_DIR + "payslips_data.txt");
+
+		if (!file.exists()) return list; 
+
+		boolean isManager = currentEmployee.getRole().equalsIgnoreCase("MANAGER");
+		String currentEmpId = currentEmployee.getEmpId();
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] parts = line.split(",");
+				if (parts.length >= 3) {
+					String recordEmpId = parts[0];
+					String month = parts[1];
+					double netPay = Double.parseDouble(parts[2]);
+
+					if (isManager || recordEmpId.equals(currentEmpId)) {
+						SalaryComponents sc = new SalaryComponents(0,0,0,0);
+						sc.netPay = netPay;
+						
+						Employee recordEmp = new Employee(recordEmpId, "EMPLOYEE", "Unknown", "", "", null);
+						list.add(new Payslip(recordEmp, sc, month));
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("Error reading dashboard data: " + e.getMessage());
+		}
+		return list;
+	}
+
+	/**
 	 * Method to handle login flow
 	 */
 	public static void handleLoginFlow() {
@@ -133,9 +214,18 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to handle logged in menu
+	 * * @param session         The active session
+	 * @param currentEmployee The currently logged-in employee
 	 */
 	private static void loggedInMenu(Session session, Employee currentEmployee) {
 		boolean inSession = true;
+		
+		ArrayList<Payslip> payslips = loadRealPayslips(currentEmployee);
+		Dashboard dashboard = DashboardFactory.getDashboard(currentEmployee.getRole());
+		
+		if (dashboard != null) {
+			dashboard.display(payslips, currentEmployee);
+		}
 		
 		while(inSession) {
 			if(session.isExpired()) {
@@ -143,8 +233,7 @@ public class EmployeePayrollApp {
 				return; 
 			}
 			
-			System.out.println("\n=== User Dashboard ===");
-			System.out.println("Welcome, " + currentEmployee.getName());
+			System.out.println("\n=== Actions ===");
 			System.out.println("1. Generate Payslip");
 			System.out.println("0. Logout");
 			
@@ -164,6 +253,7 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to handle Payslip generation flow
+	 * * @param currentEmployee The currently logged-in employee
 	 */
 	private static void handlePayslipGeneration(Employee currentEmployee) {
 		System.out.println("\n=== USE CASE 3: PAYSLIP GENERATION ===");
@@ -190,6 +280,8 @@ public class EmployeePayrollApp {
 			
 			System.out.println(originalPayslip.toString());
 			
+			savePayslipForDashboard(currentEmployee.getEmpId(), month, originalPayslip.getNetPay());
+			
 			System.out.print("Would you like to print/download this payslip? (Y/N): ");
 			if (sc.nextLine().trim().equalsIgnoreCase("Y")) {
 				
@@ -205,6 +297,7 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Method to handle payslip print/download flow
+	 * * @param original The original Payslip object
 	 */
 	private static void handlePayslipDownload(Payslip original) {
 		System.out.println("\n=== USE CASE 4: PAYSLIP PRINT / DOWNLOAD ===");
@@ -238,11 +331,14 @@ public class EmployeePayrollApp {
 		}
 	}
 	
-	
 	/**
 	 * Entry point for payslip generation.
+<<<<<<< HEAD
 	 * 
 	 * @param args	Command-Line arguments
+=======
+	 * * @param args Command-Line arguments
+>>>>>>> feature/UC5-EmployeePayrollApp
 	 */
 	public static void main(String[] args) {
 		boolean inFlow = true;
