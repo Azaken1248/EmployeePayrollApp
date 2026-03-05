@@ -17,6 +17,7 @@ import java.io.IOException;
  */
 public class Employee {
 	private String empId;
+	private String role;
 	private String name;
 	private String email;
 	private String phone;
@@ -35,8 +36,9 @@ public class Employee {
 	 * @param phone		The phone number of the employee
 	 * @param account	The account associated with the employee
 	 */
-	public Employee(String empId, String name, String email, String phone, UserAccount account) {
+	public Employee(String empId, String role, String name, String email, String phone, UserAccount account) {
 		this.empId = empId;
+		this.role = role;
 		this.name = name;
 		this.email = email;
 		this.phone = phone;
@@ -50,6 +52,15 @@ public class Employee {
 	 */
 	public String getEmpId() {
 		return empId;
+	}
+	
+	/**
+	 * Get the role of the employee
+	 * 
+	 * @return	The role of the employee
+	 */
+	public String getRole() {
+		return role;
 	}
 
 	/**
@@ -149,11 +160,12 @@ public class Employee {
 			base.mkdirs();
 		}
 
-		File userFile = new File(BASE_DIR + "emplotee_data.txt");
+		File userFile = new File(BASE_DIR + "employee_data.txt");
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(userFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(userFile, true));
 
-		String data = String.format("%s, %s, %s, %s, %s, %s", empId,
+		String data = String.format("%s,%s,%s,%s,%s,%s,%s", empId,
+				role,
 				account.getUsername(),
 				account.getPasswordHash(),
 				name,
