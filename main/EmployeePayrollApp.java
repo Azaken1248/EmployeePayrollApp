@@ -19,7 +19,7 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
 
 /**
  * ------------- MAIN APP -------------
- * Main runner class for Use Case 4E
+ * Main runner class for Use Case 4
  *
  * Role of main():
  * - Demonstrate safe usage of a finalized object
