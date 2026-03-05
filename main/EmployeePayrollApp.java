@@ -27,18 +27,6 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
 
 /**
  * ------------- MAIN APP -------------
-<<<<<<< HEAD
- * Main runner class for Use Case 4
- *
- * Role of main():
- * - Demonstrate safe usage of a finalized object
- * - Coordinate cloning, validation and persistence
- * 
- * main() does NOT modify the original payslip.
- * 
- * @author Developer
- * @version 4.0
-=======
  * Main runner class for Use Case 5
  *
  * Role of main():
@@ -49,7 +37,6 @@ import com.seveneleven.employeepayrollapp.user.validation.Validator;
  * 
  * @author Developer
  * @version 5.0
->>>>>>> feature/UC5-EmployeePayrollApp
  */
 public class EmployeePayrollApp {
 	private static final Scanner sc = new Scanner(System.in);
@@ -333,12 +320,10 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Entry point for payslip generation.
-<<<<<<< HEAD
+
 	 * 
 	 * @param args	Command-Line arguments
-=======
-	 * * @param args Command-Line arguments
->>>>>>> feature/UC5-EmployeePayrollApp
+	 * @param args Command-Line arguments
 	 */
 	public static void main(String[] args) {
 		boolean inFlow = true;
