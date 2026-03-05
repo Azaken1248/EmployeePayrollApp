@@ -1,0 +1,17 @@
+============PAYSLIP============
+Month		:Fe  26
+Employee ID	:EMP-0001
+Employee Name:Rohit
+
+---- Earnings ----
+Basic Salary	:191919.0
+Month		:11111.0
+Month		:11112.0
+Month		:0.0
+
+---- Decutioncs ----
+PF			:23030.28
+Tax			:21414.2
+
+Net Pay		:169697.52000000002
+===============================
