@@ -3,6 +3,19 @@ package com.seveneleven.employeepayrollapp.user.validation;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * ------------- Validator Class -------------
+ * 
+ * This class is ONLY responsible for checking input correctness
+ * 
+ * Why we seperate validation:
+ * - Keeps main() clean and readbale
+ * - Avoids repeating validation logic
+ * 
+ * Important idea:
+ * - Validation logic does NOT belong to Employee
+ * - Validation happens before objects are created
+ */
 public class Validator {
 	
 	/**
