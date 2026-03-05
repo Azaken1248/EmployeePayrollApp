@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import com.seveneleven.employeepayrollapp.payments.payroll.Payslip;
+import com.seveneleven.employeepayrollapp.payments.services.FileService;
 import com.seveneleven.employeepayrollapp.payments.services.PayrollService;
+import com.seveneleven.employeepayrollapp.payments.verification.DownloadToken;
 import com.seveneleven.employeepayrollapp.user.auth.AuthenticationService;
 import com.seveneleven.employeepayrollapp.user.model.Employee;
 import com.seveneleven.employeepayrollapp.user.model.UserAccount;
@@ -186,14 +188,58 @@ public class EmployeePayrollApp {
 			double allowances = Double.parseDouble(sc.nextLine());
 			
 			PayrollService payrollService = new PayrollService();
-			Payslip payslip = payrollService.generatePayslip(currentEmployee, month, basic, hra, da, allowances);
+			Payslip originalPayslip = payrollService.generatePayslip(currentEmployee, month, basic, hra, da, allowances);
 			
-			System.out.println(payslip.toString());
+			System.out.println(originalPayslip.toString());
+			
+			System.out.print("Would you like to print/download this payslip? (Y/N): ");
+			if (sc.nextLine().trim().equalsIgnoreCase("Y")) {
+				
+				System.out.println("Original Payslip: \nPAYSLIP");
+				System.out.println(originalPayslip.toString());
+				handlePayslipDownload(originalPayslip);
+			}
 			
 		} catch (NumberFormatException e) {
 			System.out.println("\nInvalid number format! Please enter valid numeric salary components.");
 		}
 	}
+	
+	/**
+	 * Method to handle payslip print/download flow
+	 */
+	private static void handlePayslipDownload(Payslip original) {
+		System.out.println("\n=== USE CASE 4: PAYSLIP PRINT / DOWNLOAD ===");
+		
+		try {
+			Payslip cloned = (Payslip) original.clone();
+			
+			System.out.println("Verified: Download copy is equal to original");
+			System.out.println("Original hashcode : " + original.hashCode());
+			System.out.println("Cloned   hashcode : " + cloned.hashCode());
+			
+			DownloadToken token = new DownloadToken();
+			if (token.isExpired()) {
+				System.out.println("Download link has expired!");
+				return;
+			}
+			
+			FileService fileService = new FileService();
+			String textFile = fileService.savePayslipAsText(cloned);
+			String pdfFile = fileService.savePayslipAsPdf(cloned);
+			
+			System.out.println("\nPayslip Download Successful.");
+			System.out.println("Saved as text file: " + textFile);
+			System.out.println("Saved as PDF file : " + pdfFile);
+			
+			System.out.println("\n--- Printed Payslip ---");
+			System.out.println(cloned.toString());
+			
+		} catch (Exception e) {
+			System.out.println("Error during payslip download: " + e.getMessage());
+		}
+	}
+	
 	
 	/**
 	 * Entry point for payslip generation.
