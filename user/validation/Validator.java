@@ -37,6 +37,13 @@ public class Validator {
 	public static final String EMP_REGEX = "^EMP-\\d{4}$";
 	
 	/**
+	 * Regex pattern for a password with at least 8 
+	 * characters, a capital letter, a small letter
+	 * and a special character
+	 */
+	public static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)\\S{8,}$";
+	
+	/**
 	 * Checks weather an email address follows a valid format.
 	 * 
 	 * If the format is wrong:
@@ -44,18 +51,18 @@ public class Validator {
 	 *  - Program flow jumps to the catch block in main()
 	 *  
 	 * @param email The email to be validated
-	 * @throws ValidationException The exception thrown on invalid email
+	 * @throws EmailValidationException The exception thrown on invalid email
 	 */
-	public static void validateEmail(String email) throws ValidationException{
+	public static void validateEmail(String email) throws EmailValidationException{
 		if(email == null || email.isEmpty()) {
-			throw new ValidationException("Email cannot be empty!!");
+			throw new EmailValidationException("Email cannot be empty!!");
 		}
 		
 		Pattern pattern = Pattern.compile(EMAIL_REGEX);
 		Matcher matcher = pattern.matcher(email);
 		
 		if(!matcher.matches()) {
-			throw new ValidationException("Email address format invalid please use valid format: user@example.com");
+			throw new EmailValidationException("Email address format invalid please use valid format: user@example.com");
 		}
 	}
 	
@@ -67,20 +74,45 @@ public class Validator {
 	 *  - Must have exactly 10 digits
 	 *  
 	 * @param phone The phone number to be validated
-	 * @throws ValidationException ValidationException The exception thrown on invalid phone number
+	 * @throws PhoneValidationException PhoneValidationException The exception thrown on invalid phone number
 	 */
-	public static void validatePhone(String phone) throws ValidationException{
+	public static void validatePhone(String phone) throws PhoneValidationException{
 		if(phone == null || phone.isEmpty()) {
-			throw new ValidationException("Phone number cannot be empty or null");
+			throw new PhoneValidationException("Phone number cannot be empty or null");
 		}
 		
 		Pattern pattern = Pattern.compile(PHONE_REGEX);
 		Matcher matcher = pattern.matcher(phone);
 		
 		if(!matcher.matches()) {
-			throw new ValidationException("The phone number is of invalid format please enter a valid phone number.");
+			throw new PhoneValidationException("The phone number is of invalid format please enter a valid phone number.");
 		}
 		
+	}
+	
+	/**
+	 * Validate strength of passwords.
+	 * 
+	 * Rule:
+	 *  - Must have atleast 8 characters
+	 *  - Must have one capital letter
+	 *  - Must have one small letter
+	 *  - Must have one special character
+	 *  
+	 * @param password The password to be validated
+	 * @throws PasswordValidationException PasswordValidationException The exception thrown on invalid phone number
+	 */
+	public static void validatePassword(String password) throws PasswordValidationException{
+		if(password == null || password.isEmpty()) {
+			throw new PasswordValidationException("Password cannot be null or empty.");
+		}
+		
+		Pattern pattern = Pattern.compile(PASSWORD_REGEX);
+		Matcher matcher = pattern.matcher(password);
+		
+		if(!matcher.matches()) {
+			throw new PasswordValidationException("The password entered is too weak");
+		}
 	}
 	
 	/**
@@ -90,18 +122,18 @@ public class Validator {
 	 * - Must follow EMP-XXXX where X is a digit
 	 * 
 	 * @param empId	The ID to be validated
-	 * @throws ValidationException
+	 * @throws EmployeeIdValidationException EmployeeIdValidationException thrown on invalid email id.
 	 */
-	public static void validateEmpId(String empId) throws ValidationException {
+	public static void validateEmpId(String empId) throws EmployeeIdValidationException {
 		if(empId == null || empId.isEmpty()) {
-			throw new ValidationException("Employee ID cannot be empty or null");
+			throw new EmployeeIdValidationException("Employee ID cannot be empty or null");
 		}
 		
 		Pattern pattern = Pattern.compile(EMP_REGEX);
 		Matcher matcher = pattern.matcher(empId);
 		
 		if(!matcher.matches()) {
-			throw new ValidationException("The employee ID is of invalid format");
+			throw new EmployeeIdValidationException("The employee ID is of invalid format");
 		}
 	}
 }
