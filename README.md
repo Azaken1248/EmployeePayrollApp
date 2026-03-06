@@ -140,4 +140,4 @@ public class EmailValidationException extends ValidationException {
 
 ## Integration Pipeline
 
-Each feature is developed on a separate branch.
+Each feature is developed on a separate branch merged to [dev](https://github.com/Azaken1248/employeepayrollapp/tree/dev) after testing.
