@@ -1,0 +1,17 @@
+============PAYSLIP============
+Month		:March 2026
+Employee ID	:EMP-0001
+Employee Name:Rohit
+
+---- Earnings ----
+Basic Salary	:5000000.0
+Month		:50000.0
+Month		:50000.0
+Month		:20000.0
+
+---- Decutioncs ----
+PF			:600000.0
+Tax			:512000.0
+
+Net Pay		:4008000.0
+===============================

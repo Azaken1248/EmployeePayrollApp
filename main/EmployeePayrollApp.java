@@ -90,7 +90,7 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Helper method to fetch full Employee details for the logged-in user
-	 * * @param targetUsername The username of the logged-in user
+	 * @param targetUsername The username of the logged-in user
 	 * @return The corresponding Employee object
 	 */
 	private static Employee getEmployeeByUsername(String targetUsername) {
@@ -120,7 +120,7 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to persist simplified real data for the dashboard
-	 * * @param empId  The ID of the employee
+	 * @param empId  The ID of the employee
 	 * @param month  The month of the payslip
 	 * @param netPay The net pay amount
 	 */
@@ -139,7 +139,7 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to load real generated payslips from persistent storage based on role
-	 * * @param currentEmployee The currently logged-in employee
+	 * @param currentEmployee The currently logged-in employee
 	 * @return An ArrayList of Payslip objects
 	 */
 	private static ArrayList<Payslip> loadRealPayslips(Employee currentEmployee) {
@@ -201,7 +201,7 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to handle logged in menu
-	 * * @param session         The active session
+	 * @param session         The active session
 	 * @param currentEmployee The currently logged-in employee
 	 */
 	private static void loggedInMenu(Session session, Employee currentEmployee) {
@@ -240,7 +240,7 @@ public class EmployeePayrollApp {
 
 	/**
 	 * Method to handle Payslip generation flow
-	 * * @param currentEmployee The currently logged-in employee
+	 * @param currentEmployee The currently logged-in employee
 	 */
 	private static void handlePayslipGeneration(Employee currentEmployee) {
 		System.out.println("\n=== USE CASE 3: PAYSLIP GENERATION ===");
@@ -284,7 +284,7 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Method to handle payslip print/download flow
-	 * * @param original The original Payslip object
+	 * @param original The original Payslip object
 	 */
 	private static void handlePayslipDownload(Payslip original) {
 		System.out.println("\n=== USE CASE 4: PAYSLIP PRINT / DOWNLOAD ===");
@@ -320,7 +320,6 @@ public class EmployeePayrollApp {
 	
 	/**
 	 * Entry point for payslip generation.
-
 	 * 
 	 * @param args	Command-Line arguments
 	 * @param args Command-Line arguments
