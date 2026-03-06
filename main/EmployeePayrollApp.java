@@ -72,6 +72,7 @@ public class EmployeePayrollApp {
 			Validator.validateEmpId(empId);
 			Validator.validateEmail(email);
 			Validator.validatePhone(phone);
+			Validator.validatePassword(password);
 			
 			Employee newEmployee = new Employee(empId, role, name, email, phone, new UserAccount(username, PasswordUtil.hash(password.trim())));
 			
